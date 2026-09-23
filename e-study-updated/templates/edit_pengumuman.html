@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+  <h2 class="mt-4">Edit Pengumuman</h2>
+  <div class="card shadow-sm border-0 mt-4" style="max-width:750px">
+    <div class="card-body">
+      <form method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <label class="form-label fw-bold">Isi pengumuman</label>
+        <textarea name="isi" class="form-control mb-3" rows="6" required>{{ pengumuman.isi }}</textarea>
+        <button class="btn btn-primary">Simpan Perubahan</button>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Batal</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
