@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Study | Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>body { background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; }</style>
+</head>
+<body>
+    <div class="card p-4 shadow-sm" style="width: 100%; max-width: 400px; border-top: 4px solid #28a745;">
+        <h3 class="text-center mb-4">Daftar Akun Baru</h3>
+        
+        <form method="POST" action="/register">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            <!-- 1. Kolom Nama Lengkap Asli -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">Nama Lengkap Asli</label>
+                <input type="text" name="nama_lengkap" class="form-control" required placeholder="masukan nama di sini...">
+            </div>
+
+            <!-- 2. Kolom NISN / Email / No. Telp (Disimpan sebagai username di database) -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">NISN / Email / No. Telp</label>
+                <input type="text" name="username" class="form-control" required autocomplete="off" placeholder="Gunakan untuk login">
+            </div>
+            
+            <!-- 3. Kolom Password -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">Password</label>
+                <input type="password" name="password" id="inputRegPassword" class="form-control" required>
+            </div>
+
+            <!-- 4. Fitur Mata Password -->
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="showRegPassword" onclick="toggleRegPassword()">
+                <label class="form-check-label text-muted" for="showRegPassword">Tampilkan Password</label>
+            </div>
+            
+            <!-- 5. Pilihan Role (Siswa / Guru) -->
+            <div class="mb-4">
+                <label class="form-label fw-bold">Sebagai apa?</label>
+                <input type="text" class="form-control bg-light" value="🎓 Siswa" disabled>
+                <small class="text-muted">Akun guru dibuat oleh administrator sekolah.</small>
+            </div>
+            
+            <button type="submit" class="btn btn-success w-100 mb-2">Buat Akun</button>
+            
+            <div class="text-center mt-2">
+                <small>Sudah punya akun? <a href="/login" class="text-decoration-none">Kembali ke Login</a></small>
+            </div>
+        </form>
+    </div>
+
+    <!-- SCRIPT TAMPILKAN PASSWORD -->
+    <script>
+        function toggleRegPassword() {
+            var x = document.getElementById("inputRegPassword");
+            if (x.type === "password") { 
+                x.type = "text"; 
+            } else { 
+                x.type = "password"; 
+            }
+        }
+    </script>
+</body>
+</html>

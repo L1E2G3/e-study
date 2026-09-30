@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <h2 class="mb-4">⚙️ Pengaturan Akun</h2>
+    
+    <div class="card shadow-sm border-0" style="max-width: 600px; border-top: 4px solid #6c757d;">
+        <div class="card-body p-4">
+            <form method="POST" action="/settings">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                
+                <!-- Info Akun (Gak bisa diedit) -->
+                <div class="mb-3">
+                    <label class="form-label text-muted fw-bold">NISN / Email (Username)</label>
+                    <input type="text" class="form-control bg-light" value="{{ user.username }}" disabled>
+                    <small class="text-muted">Username tidak bisa diubah.</small>
+                </div>
+
+                <!-- Ganti Nama -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nama Lengkap</label>
+                    <input type="text" name="nama_lengkap" class="form-control" value="{{ user.nama_lengkap }}" required>
+                </div>
+
+                <!-- Ganti Password -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Password Baru (Opsional)</label>
+                    <input type="password" name="password" id="inputSetPassword" class="form-control" placeholder="Kosongkan jika tidak ingin ganti sandi">
+                </div>
+
+                <!-- MATA PASSWORD -->
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" id="showSetPassword" onclick="toggleSetPassword()">
+                    <label class="form-check-label text-muted" for="showSetPassword">Tampilkan Password</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 fw-bold">💾 Simpan Perubahan</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSetPassword() {
+        var x = document.getElementById("inputSetPassword");
+        if (x.type === "password") { x.type = "text"; } else { x.type = "password"; }
+    }
+</script>
+{% endblock %}

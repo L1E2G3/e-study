@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Study | Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        /* Desain Layout ala VS Code */
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background-color: #f8f9fa;
+        }
+        #wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        /* Sidebar Gelap */
+        #sidebar-wrapper {
+            width: 250px;
+            background-color: #1e1e1e; /* Warna gelap khas VS Code */
+            color: #d4d4d4;
+            transition: all 0.3s;
+        }
+        .sidebar-heading {
+            padding: 1.5rem 1.25rem;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #333;
+        }
+        .list-group-item {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            border: none;
+            padding: 15px 20px;
+            transition: all 0.2s;
+        }
+        /* Efek saat menu disorot (Hover) */
+        .list-group-item:hover, .list-group-item.active {
+            background-color: #333333;
+            color: #ffffff;
+            border-left: 4px solid #007acc; /* Garis biru ala VS Code */
+        }
+        /* Area Konten Utama */
+        #page-content-wrapper {
+            flex: 1;
+            padding: 2rem;
+            animation: fadeInPage 0.6s ease-in-out;
+        }
+
+        /* Animasi Mulus dari ELSYZ */
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 🔥 CSS EFEK API BUAT MENU PROFIL 🔥 */
+        .bg-fire {
+            background: linear-gradient(45deg, #ff0000, #ff5a00, #ffce00, #ff5a00, #ff0000);
+            background-size: 300%;
+            animation: fire-anim 2s linear infinite;
+            border: none !important;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+        @keyframes fire-anim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Tampilan layar HP: menu tidak lagi memakan sisi kiri layar. */
+        @media (max-width: 767.98px) {
+            #wrapper { display: block; }
+            #sidebar-wrapper { width: 100%; }
+            .sidebar-heading { padding: 1rem; }
+            .list-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .list-group-item { padding: 0.75rem; font-size: 0.9rem; min-height: 48px; }
+            .list-group hr { grid-column: 1 / -1; margin: 0.5rem 0; }
+            .list-group form { min-width: 0; }
+            #page-content-wrapper { padding: 1rem; }
+            h1 { font-size: 1.7rem; }
+            h2 { font-size: 1.4rem; }
+            .btn { min-height: 44px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="wrapper">
+        <!-- SIDEBAR KIRI -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading text-center">
+                <h4 class="mb-1 text-white">E-Study</h4>
+                <!-- Menampilkan Badge Role (GURU / SISWA) -->
+                <span class="badge {% if role == 'admin' %}bg-dark{% else %}bg-primary{% endif %} text-uppercase">{{ role }}</span>
+                <div class="mt-2 text-muted" style="font-size: 0.8rem;">
+                    Halo, <strong>{{ username }}</strong>!
+                </div>
+            </div>
+            
+            <div class="list-group list-group-flush mt-3">
+                <!-- Dashboard (Biru) -->
+                <a href="/" class="list-group-item {% if request.path == '/' %}bg-primary text-white fw-bold{% endif %}">🏠 Dashboard</a>
+                
+                <!-- Materi (Hijau) -->
+                <a href="/materi" class="list-group-item {% if request.path == '/materi' %}bg-success text-white fw-bold{% endif %}">📖 Materi Harian</a>
+                
+                <!-- Tugas (Merah) -->
+                <a href="/tugas" class="list-group-item {% if request.path == '/tugas' %}bg-danger text-white fw-bold{% endif %}">📝 Tugas & Latihan</a>
+                
+                <!-- Rekap Nilai (Kuning) -->
+                {% if role == 'siswa' %}
+                <a href="/nilai" class="list-group-item {% if request.path == '/nilai' %}bg-warning text-dark fw-bold{% endif %}">📊 Rekap Nilai</a>
+                {% endif %}
+                
+                <!-- 🔥 Profil Tim (Efek Api) 🔥 -->
+                <a href="/profil" class="list-group-item {% if request.path == '/profil' %}bg-fire text-white fw-bold{% endif %}">🔥 Profil Tim ELSYZ</a>
+                
+                <!-- SIHIR JINJA2: Menu Guru (Warna Gelap pas diklik) -->
+                {% if role == 'admin' %}
+                <a href="/admin" class="list-group-item {% if request.path.startswith('/admin') %}bg-dark text-white fw-bold{% else %}text-danger{% endif %} mt-3">🛡️ Panel Admin</a>
+                <a href="/tambah-materi" class="list-group-item {% if request.path == '/tambah-materi' %}bg-dark text-white fw-bold{% else %}text-warning{% endif %}">⚙️ Kelola Materi</a>
+                <a href="/tambah-tugas" class="list-group-item {% if request.path == '/tambah-tugas' %}bg-dark text-white fw-bold{% else %}text-warning{% endif %}">📤 Kelola Tugas</a>
+                <a href="/koreksi-tugas" class="list-group-item {% if request.path == '/koreksi-tugas' %}bg-dark text-white fw-bold{% else %}text-warning{% endif %}">✍️ Koreksi Semua Tugas</a>
+                {% elif role == 'guru' %}
+                <a href="/tambah-materi" class="list-group-item {% if request.path == '/tambah-materi' %}bg-dark text-white fw-bold{% else %}text-warning{% endif %} mt-3">⚙️ Upload Materi</a>
+                
+                <a href="/tambah-tugas" class="list-group-item {% if request.path == '/tambah-tugas' %}bg-dark text-white fw-bold{% else %}text-warning{% endif %}">📤 Beri Tugas & File</a>
+                
+                <a href="/koreksi-tugas" class="list-group-item {% if request.path == '/koreksi-tugas' %}bg-dark text-white fw-bold{% else %}text-warning{% endif %}">✍️ Koreksi Tugas</a>
+                {% endif %}
+
+                <!-- PEMBATAS -->
+                <hr class="text-secondary mx-3">
+
+                <!-- MENU SETTINGS (Abu-abu) -->
+                <a href="/settings" class="list-group-item {% if request.path == '/settings' %}bg-secondary text-white fw-bold{% else %}text-info{% endif %}">⚙️ Pengaturan Akun</a>
+                
+                <!-- Ganti Akun & Logout -->
+                <form method="POST" action="/logout">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="list-group-item text-primary w-100 text-start">🔄 Switch Account</button>
+                </form>
+                <form method="POST" action="/logout">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="list-group-item text-danger mt-2 w-100 text-start">🚪 Logout</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- KONTEN UTAMA (KANAN) -->
+        <div id="page-content-wrapper">
+            {% block content %}
+            <!-- Nanti isi halaman yang beda-beda bakal masuk otomatis ke sini -->
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>
