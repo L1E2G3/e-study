@@ -138,14 +138,19 @@
                 <a href="/settings" class="list-group-item {% if request.path == '/settings' %}bg-secondary text-white fw-bold{% else %}text-info{% endif %}">⚙️ Pengaturan Akun</a>
                 
                 <!-- Ganti Akun & Logout -->
-                <form method="POST" action="/logout">
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="list-group-item text-primary w-100 text-start">🔄 Switch Account</button>
-                </form>
-                <form method="POST" action="/logout">
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="list-group-item text-danger mt-2 w-100 text-start">🚪 Logout</button>
-                </form>
+                <<form method="POST" action="/logout">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="list-group-item text-primary w-100 text-start">
+        🔄 Switch Account
+    </button>
+</form>
+
+<form method="POST" action="/logout">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="list-group-item text-danger mt-2 w-100 text-start">
+        🚪 Logout
+    </button>
+</form>
             </div>
         </div>
 
