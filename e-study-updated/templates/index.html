@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mt-4">Dashboard {{ 'Guru' if role == 'guru' else 'Siswa' }}</h1>
+    <p class="lead">Selamat datang, <strong>{{ username }}</strong>.</p>
+
+    {% if role == 'guru' %}
+    <div class="row g-3 mb-4">
+        <div class="col-md-3"><div class="card shadow-sm border-0 h-100"><div class="card-body"><small class="text-muted">Materi Saya</small><h2>{{ stats.materi }}</h2></div></div></div>
+        <div class="col-md-3"><div class="card shadow-sm border-0 h-100"><div class="card-body"><small class="text-muted">Tugas Saya</small><h2>{{ stats.tugas }}</h2></div></div></div>
+        <div class="col-md-3"><div class="card shadow-sm border-0 h-100"><div class="card-body"><small class="text-muted">Belum Dinilai</small><h2>{{ stats.belum_dinilai }}</h2><a href="/koreksi-tugas">Buka koreksi</a></div></div></div>
+        <div class="col-md-3"><div class="card shadow-sm border-0 h-100"><div class="card-body"><small class="text-muted">Deadline 24 Jam</small><h2>{{ stats.deadline_dekat }}</h2></div></div></div>
+    </div>
+    <div class="card shadow-sm border-0 mb-4"><div class="card-body">
+        <h5>Aktivitas tugas saya</h5>
+        <div class="table-responsive"><table class="table mb-0"><thead><tr><th>Tugas</th><th>Deadline</th><th>Pengumpulan</th></tr></thead><tbody>
+        {% for r in recent %}<tr><td>{{ r.judul }}</td><td>{{ r.deadline or '-' }}</td><td>{{ r.jumlah }}</td></tr>{% else %}<tr><td colspan="3" class="text-muted">Belum ada tugas.</td></tr>{% endfor %}
+        </tbody></table></div>
+    </div></div>
+    {% else %}
+    <div class="row g-3 mb-4">
+        <div class="col-md-6"><div class="card shadow-sm border-0"><div class="card-body"><small class="text-muted">Tugas belum dikerjakan</small><h2>{{ stats.tugas_belum }}</h2><a href="/tugas">Lihat tugas</a></div></div></div>
+        <div class="col-md-6"><div class="card shadow-sm border-0"><div class="card-body"><small class="text-muted">Tugas sudah dinilai</small><h2>{{ stats.nilai_baru }}</h2><a href="/nilai">Lihat nilai</a></div></div></div>
+    </div>
+    {% endif %}
+
+    {% if role == 'guru' %}
+    <div class="card shadow-sm border-0 mb-4 bg-light"><div class="card-body"><form method="POST" action="/tambah-pengumuman">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div class="input-group"><input type="text" name="isi" class="form-control" placeholder="Tulis pengumuman kelas..." required><button class="btn btn-primary">Kirim Pengumuman</button></div>
+    </form></div></div>
+    {% endif %}
+    <h4 class="mb-3 text-secondary">Pengumuman Kelas Terbaru</h4>
+    {% for p in pengumuman %}<div class="card shadow-sm border-0 mb-3" style="max-width:800px"><div class="card-body"><p class="mb-1 fs-5">{{ p.isi }}</p><small class="text-muted">{{ p.tanggal }}</small></div></div>{% else %}<div class="alert alert-secondary border-0">Belum ada pengumuman.</div>{% endfor %}
+</div>
+{% endblock %}

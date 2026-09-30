@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mt-4">📤 Kumpulkan Tugas</h2>
+    <div class="card shadow-sm border-0 mt-4" style="max-width: 600px; border-left: 4px solid #dc3545;">
+        <div class="card-body">
+            <h5 class="text-danger">{{ tugas.judul }}</h5>
+            <p class="text-muted">Deadline: <strong>{{ tugas.deadline }}</strong></p>
+            <p class="text-muted mb-4">Pastikan file jawaban sudah benar sebelum di-upload.</p>
+            <form method="POST" action="/kumpul-tugas/{{ tugas.id }}" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Upload File Jawaban</label>
+                    <input type="file" name="file_siswa" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.ppt,.pptx" required>
+                    <small class="text-muted">Format: PDF, Word, PowerPoint, atau Foto.</small>
+                </div>
+                <button type="submit" class="btn btn-danger w-100 mt-3">📤 Kirim Jawaban Sekarang</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mt-4">📤 Beri Tugas & Upload File</h2>
+    <p class="text-muted">Atur tanggal dan jam terakhir siswa boleh mengumpulkan tugas.</p>
+
+    <div class="card shadow-sm border-0 mt-4" style="max-width: 650px;">
+        <div class="card-body">
+            <form method="POST" action="/tambah-tugas" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Judul Tugas</label>
+                    <input type="text" name="judul" class="form-control" placeholder="Contoh: Project KIK E-Study" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Deskripsi / Instruksi</label>
+                    <textarea name="deskripsi" class="form-control" rows="4" placeholder="Jelaskan apa yang harus dikerjakan siswa..." required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Tanggal & Jam Batas Pengumpulan</label>
+                    <input type="datetime-local" name="deadline" class="form-control" required>
+                    <small class="text-muted">Siswa tidak bisa mengunggah jawaban setelah waktu ini.</small>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Upload File Soal / Materi Pendukung</label>
+                    <input type="file" name="file_tugas" class="form-control" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png">
+                    <small class="text-muted">Opsional. PDF, Word, PowerPoint, atau foto.</small>
+                </div>
+                <button type="submit" class="btn btn-danger w-100">📤 Simpan & Berikan Tugas</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

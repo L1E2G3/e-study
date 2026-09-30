@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mt-4">📖 Materi Harian</h1>
+    <p class="lead">Materi yang dipublikasikan guru.</p>
+    <form class="row g-2 mt-3 mb-4" method="GET">
+        <div class="col-md-6"><input name="q" value="{{ search }}" class="form-control" placeholder="Cari materi, bab, atau mata pelajaran..."></div>
+        <div class="col-md-4"><select name="mapel" class="form-select"><option value="">Semua Mata Pelajaran</option>{% for x in mapel_list %}<option value="{{ x.mata_pelajaran }}" {% if subject == x.mata_pelajaran %}selected{% endif %}>{{ x.mata_pelajaran }}</option>{% endfor %}</select></div>
+        <div class="col-md-2"><button class="btn btn-primary w-100">Cari</button></div>
+    </form>
+    <div class="row">
+    {% for m in daftar_materi %}
+        <div class="col-lg-6 mb-4"><div class="card shadow-sm border-0 h-100"><div class="card-body">
+            <div class="d-flex justify-content-between gap-2 flex-wrap mb-2"><span class="badge bg-success">{{ m.mata_pelajaran or 'Materi' }}</span><span class="badge bg-secondary">{{ m.kelas or 'Semua Kelas' }}</span></div>
+            <h4>{{ m.judul }}</h4><p class="text-muted small">👤 {{ m.pembuat_nama or m.penulis or 'Guru' }} · 🕒 {{ m.tanggal or '-' }}</p>
+            <hr><p style="white-space:pre-line">{{ m.isi }}</p>
+            {% if m.file_materi %}<div class="p-3 mb-3 bg-light border rounded">📎 <a href="{{ url_for('download_upload', filename=m.file_materi) }}" class="btn btn-outline-success btn-sm">Download Lampiran</a></div>{% endif %}
+            {% if m.video_url %}<div class="mt-3"><h6>🎥 Video Pembelajaran</h6><div class="ratio ratio-16x9"><iframe src="{{ m.video_url }}" title="Video" allowfullscreen></iframe></div></div>{% endif %}
+            {% if role == 'guru' and m.dibuat_oleh == session.user_id %}<div class="d-flex gap-2 mt-3"><a href="{{ url_for('edit_materi', materi_id=m.id) }}" class="btn btn-outline-primary btn-sm">✏️ Edit</a><form method="POST" action="{{ url_for('hapus_materi', materi_id=m.id) }}" onsubmit="return confirm('Hapus materi ini?')"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><button class="btn btn-outline-danger btn-sm">🗑️ Hapus</button></form></div>{% endif %}
+        </div></div></div>
+    {% else %}<div class="alert alert-warning">Belum ada materi yang dipublikasikan.</div>{% endfor %}
+    </div>
+</div>
+{% endblock %}

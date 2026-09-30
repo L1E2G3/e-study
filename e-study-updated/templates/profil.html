@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- IMPORT FONT KEREN DARI GOOGLE -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Playfair+Display:ital,wght@1,700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+
+<style>
+    /* 🔥 RETAS BAWAAN BASE.HTML BIAR FULL GELAP TANPA CELAH 🔥 */
+    body { background-color: #0d0d0d !important; }
+    #page-content-wrapper { padding: 0 !important; }
+
+    /* 1. Animasi Masuk Halaman */
+    .masuk-api { animation: popFire 0.8s ease-out forwards; opacity: 0; transform: translateY(30px); }
+    @keyframes popFire { to { opacity: 1; transform: translateY(0); } }
+    
+    /* 🔥 BACKGROUND AESTHETIC FULL LAYAR 🔥 */
+    .bg-aesthetic {
+        background-color: #0d0d0d;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px);
+        background-size: 25px 25px;
+        min-height: 100vh;
+        padding: 6rem 2rem 4rem 2rem;
+        box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+        width: 100%;
+    }
+
+    /* 🔥 TIPOGRAFI ELSYZ TEAM (UNGU NEON) 🔥 */
+    .judul-utama {
+        color: #b84dff; 
+        font-size: 3.5rem;
+        letter-spacing: 5px;
+        text-shadow: 0 0 15px rgba(184, 77, 255, 0.5), 0 0 30px rgba(184, 77, 255, 0.2);
+        display: inline-block;
+        position: relative;
+    }
+    .teks-team {
+        position: absolute;
+        bottom: 8px;
+        right: -35px;
+        font-size: 1rem;
+        font-weight: 400;
+        letter-spacing: 2px;
+        color: #888;
+        font-family: 'Courier New', monospace;
+        text-shadow: none;
+    }
+
+    /* 2. Kartu Utama Hitam & Card Body (Diberi ruang atas & overflow visible) */
+    .kartu-profil { 
+        position: relative; 
+        transition: all 0.3s ease-in-out; 
+        background-color: #1a1a1a; 
+        border-radius: 0.5rem;
+        z-index: 1;
+        color: #fff; 
+        overflow: visible !important; 
+    }
+    
+    .card-body-custom {
+        overflow: visible !important;
+        padding-top: 3rem !important; /* Memberikan ruang kosong di atas agar teks raksasa tidak mentok */
+    }
+
+    /* 3. Lapis Khusus Api */
+    .bg-api {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        overflow: hidden; border-radius: inherit; z-index: -1; pointer-events: none;
+    }
+    .bg-api::before {
+        content: ""; position: absolute; bottom: -50px; left: 50%; width: 120px; height: 120px;
+        background: linear-gradient(to top, #ff0000, #ff5a00, #ffce00, transparent);
+        border-radius: 50%; filter: blur(15px); opacity: 0; transform-origin: bottom center;
+        transform: translateX(-50%) translateY(50px) scaleY(1) scaleX(2);
+        animation: nyembur 1.2s ease-out forwards;
+    }
+    @keyframes nyembur {
+        0% { transform: translateX(-50%) translateY(50px) scaleY(1) scaleX(2); opacity: 0.9; }
+        100% { transform: translateX(-50%) translateY(-400px) scaleY(5) scaleX(0.1); opacity: 0; }
+    }
+    .delay-1, .delay-1 .bg-api::before { animation-delay: 0.1s; }
+    .delay-2, .delay-2 .bg-api::before { animation-delay: 0.3s; }
+    .delay-3, .delay-3 .bg-api::before { animation-delay: 0.5s; }
+    .delay-4, .delay-4 .bg-api::before { animation-delay: 0.7s; }
+    .delay-5, .delay-5 .bg-api::before { animation-delay: 0.9s; }
+
+    /* 4. CSS Hover Kartu */
+    .kartu-ebew:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 25px rgba(0, 168, 255, 0.4) !important; }
+    .kartu-l:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 30px rgba(255, 215, 0, 0.5) !important; }
+    .kartu-saiful:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 25px rgba(255, 51, 51, 0.4) !important; }
+    .kartu-zahra:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 25px rgba(255, 193, 7, 0.2) !important; }
+    .kartu-yuni:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 25px rgba(0, 229, 255, 0.4) !important; }
+
+    /* 5. EFEK TEKS MENYALA UTAMA */
+    .glow-ebew { color: #00a8ff; text-shadow: 0 0 10px rgba(0, 168, 255, 0.8), 0 0 20px rgba(0, 168, 255, 0.4); }
+    .glow-l { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.4); }
+    .glow-saiful { color: #ff3333; text-shadow: 0 0 10px rgba(255, 51, 51, 0.8), 0 0 20px rgba(255, 51, 51, 0.4); }
+    .glow-zahra { color: #ffc107; text-shadow: 0 0 10px rgba(255, 193, 7, 0.8), 0 0 20px rgba(255, 193, 7, 0.4); }
+    .glow-yuni { color: #00e5ff; text-shadow: 0 0 10px rgba(0, 229, 255, 0.8), 0 0 20px rgba(0, 229, 255, 0.4); }
+
+    /* 6. WARNA ROLE DI TENGAH */
+    .role-ebew { color: #66d9ff; text-shadow: 0 0 8px rgba(102, 217, 255, 0.5); }
+    .role-l { color: #ffea70; text-shadow: 0 0 8px rgba(255, 234, 112, 0.5); }
+    .role-saiful { color: #ff7979; text-shadow: 0 0 8px rgba(255, 121, 121, 0.5); }
+    .role-zahra { color: #ffe066; text-shadow: 0 0 8px rgba(255, 224, 102, 0.5); }
+    .role-yuni { color: #81ecec; text-shadow: 0 0 8px rgba(129, 236, 236, 0.5); }
+    
+    /* 7. ANIMASI TEKS KINCLONG */
+    @keyframes kinclong-anim { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+    .teks-kinclong { background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: kinclong-anim 3.5s linear infinite; font-weight: 500; }
+    .desc-ebew { background-image: linear-gradient(120deg, #00a8ff 30%, #ffffff 50%, #00a8ff 70%); } 
+    .desc-l { background-image: linear-gradient(120deg, #ffd700 30%, #ffffff 50%, #ffd700 70%); } 
+    .desc-saiful { background-image: linear-gradient(120deg, #ff7979 30%, #ffffff 50%, #ff7979 70%); } 
+    .desc-zahra { background-image: linear-gradient(120deg, #ffc107 30%, #ffffff 50%, #ffc107 70%); } 
+    .desc-yuni { background-image: linear-gradient(120deg, #00e5ff 30%, #ffffff 50%, #00e5ff 70%); } 
+
+    /* 8. 🔥 CUSTOM ANIMASI MASING-MASING JULUKAN 🔥 */
+    .area-nama { position: relative; display: inline-block; cursor: crosshair; padding: 5px 10px; }
+    .julukan {
+        position: absolute; bottom: 125%; left: 50%; /* Ditaruh di ruang kosong atas card-body */
+        transform: translateX(-50%);
+        opacity: 0; pointer-events: none; white-space: nowrap; z-index: 100;
+        transition: opacity 0.3s ease;
+    }
+
+    /* A. KING (Ebew) */
+    .teks-king {
+        font-family: 'Cinzel', serif; color: #00a8ff; font-size: 2.8rem; letter-spacing: 4px;
+        text-shadow: 0 0 15px #00a8ff, 0 0 30px #00a8ff;
+        transform: translateX(-50%) translateY(20px) scale(0.4);
+        filter: blur(10px);
+    }
+    .area-nama:hover .teks-king {
+        opacity: 1; transform: translateX(-50%) translateY(0) scale(1); filter: blur(0px);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* B. L (L) */
+    .teks-l {
+        font-family: 'Cloister Black', 'Old English Text MT', 'UnifrakturMaguntia', serif; 
+        color: #000; font-size: 4rem;
+        text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700, 0 0 50px #ffea70;
+        transform: translateX(-50%) translateY(-10px);
+        filter: brightness(2.5);
+    }
+    .area-nama:hover .teks-l {
+        opacity: 1; transform: translateX(-50%) translateY(0); filter: brightness(1);
+        transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    /* C. ACE (Saiful) */
+    .teks-ace {
+        font-family: 'Courier New', monospace; font-weight: 900; color: #ff3333; font-size: 2.8rem; letter-spacing: 5px;
+        text-shadow: 0 0 20px #ff3333; display: inline-flex;
+    }
+    .teks-ace span { opacity: 0; display: inline-block; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+    .teks-ace .huruf-a { transform: translateX(-60px) scale(0.3); }
+    .teks-ace .huruf-c { transform: translateY(-40px) scale(0.3); }
+    .teks-ace .huruf-e { transform: translateX(60px) scale(0.3); }
+    .area-nama:hover .teks-ace { opacity: 1; }
+    .area-nama:hover .teks-ace span { opacity: 1; transform: translateX(0) translateY(0) scale(1); }
+    .area-nama:hover .teks-ace .huruf-a { transition-delay: 0.05s; }
+    .area-nama:hover .teks-ace .huruf-c { transition-delay: 0.15s; }
+    .area-nama:hover .teks-ace .huruf-e { transition-delay: 0.25s; }
+
+    /* D. QUEEN (Zahra): Sapuan Cahaya Utuh */
+    .teks-queen {
+        font-family: 'Playfair Display', serif; 
+        font-style: italic; 
+        color: #ffc107; 
+        font-size: 2.8rem;
+        transform: translateX(-50%);
+        text-shadow: 0 0 15px rgba(255, 193, 7, 0.8);
+        clip-path: inset(0 100% 0 0);
+        opacity: 0;
+        transition: clip-path 0.7s ease-in-out, opacity 0.2s ease;
+    }
+    .area-nama:hover .teks-queen {
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+
+    /* E. ORACLE (Yuni) */
+    .teks-oracle {
+        font-family: 'Cinzel', serif; color: #00e5ff; font-size: 2rem; letter-spacing: 12px;
+        text-shadow: 0 0 20px #00e5ff; transform: translateX(-50%) translateY(10px); filter: contrast(200%);
+    }
+    .area-nama:hover .teks-oracle {
+        opacity: 1; transform: translateX(-50%) translateY(0); letter-spacing: 4px; filter: contrast(100%);
+        transition: all 0.5s ease-out;
+    }
+
+    /* Layar sentuh tidak memiliki hover; buat profil tetap rapi tanpa animasi besar. */
+    @media (max-width: 575.98px) {
+        .bg-aesthetic { padding: 3rem 1rem; }
+        .judul-utama { font-size: 2.35rem; letter-spacing: 2px; }
+        .teks-team { right: -20px; bottom: 3px; font-size: 0.75rem; }
+        .kartu-profil:hover { transform: none; }
+        .julukan { display: none; }
+    }
+</style>
+
+<div class="bg-aesthetic overflow-hidden">
+    <div class="text-center mb-5 masuk-api">
+        <!-- JUDUL UNGU -->
+        <h1 class="fw-bold judul-utama">
+            ELSYZ<span class="teks-team">team</span>
+        </h1>
+        <p class="mt-3" style="color: #666; font-size: 0.95rem; letter-spacing: 1px;">Di balik layar pengembangan E-Study untuk Project KIK</p>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center g-5">
+            <!-- Anggota 1: Ebew (KING) -->
+            <div class="col-md-4 col-sm-6 masuk-api delay-1">
+                <div class="card shadow-sm border-0 h-100 text-center p-3 kartu-profil kartu-ebew" style="border-top: 4px solid #00a8ff;">
+                    <div class="bg-api"></div>
+                    <div class="card-body card-body-custom position-relative">
+                        <h3 class="card-title fw-bold area-nama glow-ebew">Ebew 
+                            <span class="julukan teks-king">KING</span>
+                        </h3>
+                        <h6 class="mb-3 role-ebew">Lead Developer / Full-Stack</h6>
+                        <p class="card-text teks-kinclong desc-ebew">Ngemandiin error jam 3 pagi. Ahlinya merakit web LMS E-Study dari nol sampai beroperasi penuh!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Anggota 2: L (Turun dari Langit) -->
+            <div class="col-md-4 col-sm-6 masuk-api delay-2">
+                <div class="card shadow-sm border-0 h-100 text-center p-3 kartu-profil kartu-l" style="border-top: 4px solid #ffd700;">
+                    <div class="bg-api"></div>
+                    <div class="card-body card-body-custom position-relative">
+                        <h3 class="card-title fw-bold area-nama glow-l">L 
+                            <span class="julukan teks-l">L</span>
+                        </h3>
+                        <h6 class="mb-3 role-l">System Analyst</h6>
+                        <p class="card-text teks-kinclong desc-l">Merancang alur sistem dan memastikan database aplikasi berjalan tanpa hambatan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anggota 3: Saiful (ACE) -->
+            <div class="col-md-4 col-sm-6 masuk-api delay-3">
+                <div class="card shadow-sm border-0 h-100 text-center p-3 kartu-profil kartu-saiful" style="border-top: 4px solid #ff3333;">
+                    <div class="bg-api"></div>
+                    <div class="card-body card-body-custom position-relative">
+                        <h3 class="card-title fw-bold area-nama glow-saiful">Saiful 
+                            <span class="julukan teks-ace">
+                                <span class="huruf-a">A</span><span class="huruf-c">C</span><span class="huruf-e">E</span>
+                            </span>
+                        </h3>
+                        <h6 class="mb-3 role-saiful">UI/UX Designer</h6>
+                        <p class="card-text teks-kinclong desc-saiful">Memastikan tampilan web estetik, responsif, dan nyaman digunakan oleh guru maupun siswa.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anggota 4: Zahra (QUEEN) -->
+            <div class="col-md-4 col-sm-6 masuk-api delay-4">
+                <div class="card shadow-sm border-0 h-100 text-center p-3 kartu-profil kartu-zahra" style="border-top: 4px solid #333;">
+                    <div class="bg-api"></div>
+                    <div class="card-body card-body-custom position-relative">
+                        <h3 class="card-title fw-bold area-nama glow-zahra">Zahra 
+                            <span class="julukan teks-queen">QUEEN</span>
+                        </h3>
+                        <h6 class="mb-3 role-zahra">Quality Assurance (QA)</h6>
+                        <p class="card-text teks-kinclong desc-zahra">Menguji kelayakan sistem dan mencari bug agar web siap dipakai 100% untuk presentasi.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anggota 5: Yuni (ORACLE) -->
+            <div class="col-md-4 col-sm-6 masuk-api delay-5">
+                <div class="card shadow-sm border-0 h-100 text-center p-3 kartu-profil kartu-yuni" style="border-top: 4px solid #00e5ff;">
+                    <div class="bg-api"></div>
+                    <div class="card-body card-body-custom position-relative">
+                        <h3 class="card-title fw-bold area-nama glow-yuni">Yuni 
+                            <span class="julukan teks-oracle">ORACLE</span>
+                        </h3>
+                        <h6 class="mb-3 role-yuni">Project Manager</h6>
+                        <p class="card-text teks-kinclong desc-yuni">Regulasi strategi dokumentasi, materi KIK, dan memastikan project selesai tepat waktu.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

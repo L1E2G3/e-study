@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mt-4">📊 Rekap Nilai Pribadi</h1>
+    <p class="lead">Daftar nilai dari tugas-tugas yang sudah kamu kerjakan.</p>
+    
+    <div class="card shadow-sm border-0 mt-4" style="max-width: 800px;">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>No</th>
+                            <th>Judul Tugas</th>
+                            <th>Status Nilai</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for n in daftar_nilai %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td class="fw-bold">{{ n.judul }}</td>
+                            <td>
+                                {% if n.nilai != None %}
+                                    <span class="badge bg-primary fs-6">{{ n.nilai }} / 100</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">Belum Dinilai Guru</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-4">Belum ada tugas yang kamu kumpulkan.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mt-4">📚 Tambah Materi</h2>
+    <p class="text-muted">Publikasikan materi lengkap untuk siswa.</p>
+
+    <div class="card shadow-sm border-0 mt-4" style="max-width: 760px;">
+        <div class="card-body">
+            <form method="POST" action="/tambah-materi" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Mata Pelajaran</label>
+                        <input type="text" name="mata_pelajaran" class="form-control" placeholder="Contoh: Matematika" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Kelas</label>
+                        <input type="text" name="kelas" class="form-control" placeholder="Contoh: XII TKJ D" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Judul Bab / Materi</label>
+                    <input type="text" name="judul" class="form-control" placeholder="Contoh: Persamaan Kuadrat" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Deskripsi / Pengantar</label>
+                    <textarea name="isi" class="form-control" rows="5" placeholder="Jelaskan tujuan pembelajaran dan ringkasan materi hari ini..." required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">File Lampiran</label>
+                    <input type="file" name="file_materi" class="form-control" accept=".pdf,.ppt,.pptx,.doc,.docx">
+                    <small class="text-muted">Opsional. PDF, PowerPoint, atau Word. Maksimal 10 MB.</small>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Video YouTube</label>
+                    <input type="url" name="video_url" class="form-control" placeholder="https://www.youtube.com/watch?v=...">
+                    <small class="text-muted">Opsional. Video akan diputar langsung di halaman materi.</small>
+                </div>
+
+                <div class="alert alert-light border">
+                    <strong>Penulis:</strong> {{ username }}<br>
+                    <strong>Waktu publikasi:</strong> otomatis saat materi disimpan.
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">📚 Publikasikan Materi</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
